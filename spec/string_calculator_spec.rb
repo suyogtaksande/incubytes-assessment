@@ -71,4 +71,24 @@ RSpec.describe StringCalculator do
       expect(calculator.send(:parse_delimiter, '//;')).to eq(';')
     end
   end
+
+  describe '#check_for_integer_string' do
+    it 'should not raise an error for a valid integer string' do
+      expect { calculator.send(:check_for_integer_string, '1,2,3') }.not_to raise_error
+      expect { calculator.send(:check_for_integer_string, '0') }.not_to raise_error
+      expect { calculator.send(:check_for_integer_string, '-1,2,-3') }.not_to raise_error
+    end
+
+    it 'should raises an error for a string with non-integer values' do
+      expect { calculator.send(:check_for_integer_string, '1,2,a') }.to raise_error(ArgumentError, 'string has non integer value.')
+      expect { calculator.send(:check_for_integer_string, '1.1,2,3') }.to raise_error(ArgumentError, 'string has non integer value.')
+      expect { calculator.send(:check_for_integer_string, 'abc') }.to raise_error(ArgumentError, 'string has non integer value.')
+    end
+
+    it 'should raises an error for a string with only whitespace' do
+      expect { calculator.send(:check_for_integer_string, ' ') }.to raise_error(ArgumentError, 'string has non integer value.')
+      expect { calculator.send(:check_for_integer_string, "\t") }.to raise_error(ArgumentError, 'string has non integer value.')
+      expect { calculator.send(:check_for_integer_string, "\n") }.to raise_error(ArgumentError, 'string has non integer value.')
+    end
+  end
 end
