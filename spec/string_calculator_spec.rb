@@ -24,5 +24,17 @@ RSpec.describe StringCalculator do
       string = "//;\n1;2"
       expect(calculator.add(string)).to eq(3)
     end
+
+    it "should handle negative numbers in the string" do
+      string = "1,2,-3,4,-5"
+  
+      begin
+        calculator.add(string)
+      rescue ArgumentError => e
+        negatives = string.split(",").select { |num| num.to_i.negative? }
+        expected_message = "negative numbers not allowed #{negatives.join(', ')}"
+        expect(e.message).to eq(expected_message)
+      end
+    end
   end
 end

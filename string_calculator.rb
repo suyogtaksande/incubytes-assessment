@@ -3,6 +3,7 @@ class StringCalculator
         return 0 if numbers.empty?
 
         numbers = extract_delimiter_and_numbers(numbers)
+        check_for_negative_numbers(numbers)
         numbers.gsub("\n", ",").split(",").map(&:to_i).sum
     end
 
@@ -20,5 +21,13 @@ class StringCalculator
     
     def parse_delimiter(delimiter_string)
         delimiter_string.gsub("//", "").strip
+    end
+
+    def check_for_negative_numbers(numbers)
+        nums = numbers.split(",")
+        negatives = nums.select { |num| num.to_i.negative? }
+        if negatives.any?
+          raise ArgumentError, "negative numbers not allowed #{negatives.join(', ')}"
+        end
     end
 end
