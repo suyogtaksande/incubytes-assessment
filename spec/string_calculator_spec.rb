@@ -19,5 +19,10 @@ RSpec.describe StringCalculator do
       sum = string.gsub("\n", ",").split(",").map(&:to_i).sum
       expect(calculator.add(string)).to eq(sum)
     end
+
+    it 'should handle delimiters & returns the sum' do
+      string = "//;\n1;2"
+      expect(calculator.add(string)).to eq(3)
+    end
   end
 end
