@@ -36,5 +36,9 @@ RSpec.describe StringCalculator do
         expect(e.message).to eq(expected_message)
       end
     end
+
+    it 'should raises an error for non-integer values' do
+      expect { calculator.add("1,a") }.to raise_error(ArgumentError, "string has non integer value.")
+    end
   end
 end

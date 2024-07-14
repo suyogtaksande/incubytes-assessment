@@ -4,6 +4,7 @@ class StringCalculator
 
         numbers = extract_delimiter_and_numbers(numbers)
         check_for_negative_numbers(numbers)
+        check_for_integer_string(numbers)
         numbers.gsub("\n", ",").split(",").map(&:to_i).sum
     end
 
@@ -29,5 +30,19 @@ class StringCalculator
         if negatives.any?
           raise ArgumentError, "negative numbers not allowed #{negatives.join(', ')}"
         end
+    end
+
+    def check_for_integer_string(numbers)
+        nums = numbers.split(",")
+        unless nums.all? { |i| is_integer?(i.gsub("\n", "")) }
+            raise ArgumentError, "string has non integer value."
+        end
+    end
+    
+    def is_integer?(str)
+        Integer(str)
+        true
+    rescue ArgumentError
+        false
     end
 end
