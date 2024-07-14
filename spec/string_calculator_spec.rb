@@ -49,17 +49,17 @@ RSpec.describe StringCalculator do
       expect(calculator.send(:is_integer?, '-456')).to be true
     end
 
-    it 'should returns false for a string with non-integer characters' do
+    it 'should return false for a string with non-integer characters' do
       expect(calculator.send(:is_integer?, '123a')).to be false
       expect(calculator.send(:is_integer?, 'abc')).to be false
       expect(calculator.send(:is_integer?, '12.34')).to be false
     end
 
-    it 'should returns false for an empty string' do
+    it 'should return false for an empty string' do
       expect(calculator.send(:is_integer?, '')).to be false
     end
 
-    it 'should returns false for a string with only whitespace' do
+    it 'should return false for a string with only whitespace' do
       expect(calculator.send(:is_integer?, ' ')).to be false
       expect(calculator.send(:is_integer?, "\t")).to be false
       expect(calculator.send(:is_integer?, "\n")).to be false
@@ -79,16 +79,28 @@ RSpec.describe StringCalculator do
       expect { calculator.send(:check_for_integer_string, '-1,2,-3') }.not_to raise_error
     end
 
-    it 'should raises an error for a string with non-integer values' do
+    it 'should raise an error for a string with non-integer values' do
       expect { calculator.send(:check_for_integer_string, '1,2,a') }.to raise_error(ArgumentError, 'string has non integer value.')
       expect { calculator.send(:check_for_integer_string, '1.1,2,3') }.to raise_error(ArgumentError, 'string has non integer value.')
       expect { calculator.send(:check_for_integer_string, 'abc') }.to raise_error(ArgumentError, 'string has non integer value.')
     end
 
-    it 'should raises an error for a string with only whitespace' do
+    it 'should raise an error for a string with only whitespace' do
       expect { calculator.send(:check_for_integer_string, ' ') }.to raise_error(ArgumentError, 'string has non integer value.')
       expect { calculator.send(:check_for_integer_string, "\t") }.to raise_error(ArgumentError, 'string has non integer value.')
       expect { calculator.send(:check_for_integer_string, "\n") }.to raise_error(ArgumentError, 'string has non integer value.')
+    end
+  end
+
+  describe '#extract_delimiter_and_numbers' do
+    it 'returns the numbers with default delimiters' do
+      expect(calculator.send(:extract_delimiter_and_numbers, '1,2,3')).to eq('1,2,3')
+      expect(calculator.send(:extract_delimiter_and_numbers, '1\n2,3')).to eq('1\n2,3')
+    end
+
+    it 'returns the numbers with custom single character delimiter' do
+      expect(calculator.send(:extract_delimiter_and_numbers, "//;\n1;2;3")).to eq('1,2,3')
+      expect(calculator.send(:extract_delimiter_and_numbers, "//#\n1#2#3")).to eq('1,2,3')
     end
   end
 end
