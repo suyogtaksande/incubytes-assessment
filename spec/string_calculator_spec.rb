@@ -65,4 +65,10 @@ RSpec.describe StringCalculator do
       expect(calculator.send(:is_integer?, "\n")).to be false
     end
   end
+
+  describe '#parse_delimiter' do
+    it 'returns the correct delimiter for a single character delimiter' do
+      expect(calculator.send(:parse_delimiter, '//;')).to eq(';')
+    end
+  end
 end
