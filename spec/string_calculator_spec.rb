@@ -13,5 +13,11 @@ RSpec.describe StringCalculator do
       string = "1,2,6,10"
       expect(calculator.add(string)).to eq(string.split(",").map(&:to_i).sum)
     end
+
+    it "should allow new line inserted in between and return the sum" do
+      string = "1\n2,3\n\n4"
+      sum = string.gsub("\n", ",").split(",").map(&:to_i).sum
+      expect(calculator.add(string)).to eq(sum)
+    end
   end
 end
